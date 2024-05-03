@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 function App() {
-  const [count, setCount] = useState(0)
+  const [totalSpend, setTotalSpend] = useState(0);
+
+  useEffect(() => {
+    fetch("/api/expenses/get-spent")
+      .then((res) => res.json())
+      .then((data) => {
+        setTotalSpend(data.total);
+      });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Card className="w-[350px] m-auto">
+      <CardHeader>
+        <CardTitle>Total Spend</CardTitle>
+        <CardDescription>The total anount you've spend.</CardDescription>
+      </CardHeader>
+      <CardContent>{totalSpend}</CardContent>
+    </Card>
+  );
 }
 
-export default App
+export default App;
